@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrocaLab™</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500&family=Poppins:wght@800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --acc:#FFC700;
+  --dark:#0A0A0F;
+  --gray:#6B7280;
+  --white:#FFFFFF;
+}
+html,body{min-height:100%;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#FFFFFF;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 20px 72px;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;
+  top:-15%;left:50%;transform:translateX(-50%);
+  width:700px;height:400px;
+  background:radial-gradient(ellipse,rgba(255,199,0,0.07) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.bg-geo{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+header{
+  width:100%;max-width:480px;
+  display:flex;justify-content:flex-end;
+  margin-bottom:36px;position:relative;z-index:10;
+}
+.share-btn{
+  display:flex;align-items:center;gap:6px;
+  background:transparent;border:1px solid rgba(10,10,15,0.12);
+  color:var(--gray);padding:7px 15px;border-radius:50px;
+  cursor:pointer;font-family:'Inter',sans-serif;
+  font-size:12px;font-weight:500;transition:all 0.2s;
+}
+.share-btn:hover{border-color:rgba(255,199,0,0.5);color:var(--dark);background:rgba(255,199,0,0.05);}
+
+.container{
+  display:flex;flex-direction:column;align-items:center;
+  width:100%;max-width:480px;position:relative;z-index:10;
+}
+
+.avatar-ring{
+  width:82px;height:82px;border-radius:50%;padding:2.5px;
+  background:linear-gradient(135deg,var(--acc) 0%,rgba(255,199,0,0.3) 100%);
+  margin-bottom:14px;animation:fadeIn 0.5s ease both;
+  box-shadow:0 0 0 6px rgba(255,199,0,0.08);
+}
+.avatar-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;background:#000;}
+.avatar-inner img{width:100%;height:100%;object-fit:cover;}
+
+.brand-name{
+  font-family:'Poppins',sans-serif;font-size:26px;font-weight:800;
+  color:var(--dark);letter-spacing:-0.5px;margin-bottom:6px;
+  animation:fadeIn 0.5s 0.08s ease both;
+}
+.brand-name em{color:var(--acc);font-style:normal;text-shadow:0 0 16px rgba(255,199,0,0.4);}
+.brand-sub{
+  font-size:14px;color:var(--gray);margin-bottom:36px;
+  text-align:center;line-height:1.5;max-width:300px;
+  animation:fadeIn 0.5s 0.12s ease both;
+}
+
+.section-label{
+  width:100%;font-size:10px;font-weight:600;letter-spacing:1.2px;
+  color:var(--gray);text-transform:uppercase;
+  margin-bottom:10px;padding-left:2px;
+  animation:fadeIn 0.5s ease both;
+}
+
+.links{width:100%;display:flex;flex-direction:column;gap:0;}
+
+/* BASE TILE */
+.tile{
+  display:flex;align-items:center;gap:14px;
+  width:100%;border-radius:14px;padding:17px 18px;
+  text-decoration:none;
+  margin-bottom:10px;position:relative;overflow:hidden;
+  transition:transform 0.2s,box-shadow 0.25s,border-color 0.25s,background 0.25s;
+  animation:slideUp 0.5s ease both;
+}
+.tile:nth-child(1){animation-delay:0.15s;}
+.tile:nth-child(2){animation-delay:0.22s;}
+.tile:nth-child(3){animation-delay:0.30s;}
+.tile:nth-child(4){animation-delay:0.38s;}
+.tile:nth-child(5){animation-delay:0.46s;}
+.tile:active{transform:translateY(0) scale(1);}
+
+/* PRIMARY: preto solido - maxima hierarquia */
+.tile-primary{
+  background:#000000;
+  border:1.5px solid rgba(255,199,0,0.35);
+  color:var(--white);
+}
+.tile-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,199,0,0.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+.tile-primary:hover{
+  transform:translateY(-2px) scale(1.012);
+  box-shadow:0 12px 40px rgba(0,0,0,0.35),0 0 0 1px rgba(255,199,0,0.5);
+  border-color:rgba(255,199,0,0.7);
+}
+
+/* SECONDARY: fundo branco com borda cinza discreta */
+.tile-secondary{
+  background:#FFFFFF;
+  border:1.5px solid rgba(0,0,0,0.10);
+  color:var(--dark);
+}
+.tile-secondary:hover{
+  transform:translateY(-2px) scale(1.012);
+  border-color:rgba(0,0,0,0.18);
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  color:var(--dark);
+}
+
+/* ICON */
+.t-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background 0.2s,border-color 0.2s;
+}
+.tile-primary .t-icon{background:rgba(255,199,0,0.12);border:1px solid rgba(255,199,0,0.25);}
+.tile-primary:hover .t-icon{background:rgba(255,199,0,0.2);}
+.tile-secondary .t-icon{background:#000000;border:1px solid rgba(255,199,0,0.25);}
+.tile-secondary:hover .t-icon{background:#0a0a0f;border-color:rgba(255,199,0,0.5);}
+.t-icon svg{width:18px;height:18px;}
+
+/* TEXT */
+.t-content{flex:1;min-width:0;}
+.t-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:-0.15px;margin-bottom:3px;line-height:1.2;}
+.tile-primary .t-title{color:#FFFFFF;}
+.tile-secondary .t-title{color:#0A0A0F;}
+.tile-primary .t-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;}
+.tile-secondary .t-desc{font-size:12px;color:rgba(10,10,15,0.5);line-height:1.5;}
+
+/* ARROW */
+.t-arrow{display:flex;align-items:center;flex-shrink:0;transition:color 0.2s,transform 0.2s;}
+.tile-primary .t-arrow{color:rgba(255,199,0,0.5);}
+.tile-primary:hover .t-arrow{color:var(--acc);transform:translateX(2px);}
+.tile-secondary .t-arrow{color:rgba(10,10,15,0.25);}
+.tile-secondary:hover .t-arrow{color:rgba(10,10,15,0.55);transform:translateX(2px);}
+
+.divider{
+  width:100%;height:1px;
+  background:rgba(0,0,0,0.08);
+  margin:4px 0 14px;
+}
+
+.footer{
+  margin-top:36px;font-size:11px;
+  color:rgba(107,114,128,0.45);letter-spacing:0.4px;
+  z-index:10;position:relative;
+  animation:fadeIn 0.5s 0.7s ease both;
+}
+
+/* FAB - Floating Action Button */
+.fab{
+  position:fixed;bottom:28px;right:24px;z-index:999;
+  width:52px;height:52px;
+  display:flex;align-items:center;justify-content:center;
+  background:#000000;
+  border:1.5px solid rgba(255,199,0,0.4);
+  border-radius:50%;
+  text-decoration:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25),0 0 0 1px rgba(255,199,0,0.08);
+  transition:transform 0.2s,box-shadow 0.25s,border-color 0.25s;
+  cursor:pointer;
+}
+.fab:hover{
+  transform:translateY(-2px) scale(1.06);
+  border-color:rgba(255,199,0,0.75);
+  box-shadow:0 8px 28px rgba(0,0,0,0.3),0 0 16px rgba(255,199,0,0.12);
+}
+.fab:active{transform:translateY(0) scale(1);}
+.fab svg{width:22px;height:22px;}
+@media(max-width:480px){
+  .fab{bottom:20px;right:16px;width:48px;height:48px;}
+  .fab svg{width:20px;height:20px;}
+}
+
+@media(max-width:480px){
+  body{padding:32px 16px 60px;}
+  .tile{padding:15px 14px;}
+  .t-title{font-size:13px;}
+  .brand-name{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<svg class="bg-geo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <polygon points="0,0 100,0 0,100" fill="none" stroke="#FFC700" stroke-width="0.8" opacity="0.15"/>
+  <polygon points="0,0 50,0 0,50" fill="none" stroke="#FFC700" stroke-width="0.5" opacity="0.1"/>
+  <polygon points="1440,900 1340,900 1440,800" fill="none" stroke="#FFC700" stroke-width="0.8" opacity="0.15"/>
+  <line x1="0" y1="1" x2="1440" y2="1" stroke="#FFC700" stroke-width="1.5" opacity="0.1"/>
+  <circle cx="80" cy="200" r="1.5" fill="#FFC700" opacity="0.25"/>
+  <circle cx="1360" cy="160" r="1.5" fill="#FFC700" opacity="0.2"/>
+</svg>
+
+<header>
+  <button class="share-btn" onclick="if(navigator.share){navigator.share({title:'TrocaLab™',url:window.location.href})}else{navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado!'))}">
+    <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.6464 3.85347L11 4.20702L11.7071 3.49992L11.3536 3.14636L8.35355 0.146362H7.64645L4.64645 3.14636L4.29289 3.49992L5 4.20702L5.35355 3.85347L7.5 1.70702V9.49992H8.5V1.70702L10.6464 3.85347ZM1 5.49994L1.5 4.99994H4V5.99994H2V14.9999H14V5.99994H12V4.99994H14.5L15 5.49994V15.4999L14.5 15.9999H1.5L1 15.4999V5.49994Z" fill="currentColor"/>
+    </svg>
+    Compartilhar
+  </button>
+</header>
+
+<div class="container">
+
+  <div class="avatar-ring">
+    <div class="avatar-inner">
+      <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAIPAgUDASIAAhEBAxEB/8QAHQABAAEEAwEAAAAAAAAAAAAAAAECAwcIBAYJBf/EAE0QAQABAwIDBAUGCAoIBwAAAAABAgMEBREGITEHElFhCCJBcbITFDJygbEVIyQ0c3SRoRYmMzZCUmNldcEXN1NiZIOz8CdDRFWCkqL/xAAcAQEAAQUBAQAAAAAAAAAAAAAAAQMEBQYHCAL/xAA4EQEAAQMCAwQHBgYDAQAAAAAAAQIDBAURBiExEkFRcRMiMzWBkbEHIzI0YdEUUnKhweEVJUKC/9oADAMBAAIRAxEAPwDTIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEx1BCYiZ6QbTuvY8T3apjuztMbxILPdnfmuU01bRPLu9HY+DuEde4w1m3pmgadczMiqYiqaY9S1H9aurpTT722PZb2AcJcK1W87iWLHEuqzb2rs107YlmZ6xFPWv60/sYXV9fwtJo3yKufhHOVzj4l2/+GOTSyq3NO/kpqj1eTb/tH9GrQtVryM/grOjR79yZq+YZNU12Jnnypq60+6d2tnG3A/EXBmoXMLiLSr+LXH0Lm29q5501xyl9aZr2BqcfcXI38J5Si9iXbP4odQmJNpXq6ap57dFuqJiebM7LdQJnqhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACYjc2BVTbmqOUqotz3tvuVWqd429ruHZz2ecTcdalRi6Fg3KrHe2v5l2macexHt71fSZ8o5yp3b1uzbm5cnaI8U00zVO0RzdSnGrq7kUb1111d2KYpnvTPs5e1sD2N+jhqOrWLetcd3b2kafXEV2sC3yyr9Psmr/Z0z58/KGYOyTsh4Z4DinN7tGsa1HTOv242tfoqJ+j9aefuZLn1qprqqmqqZ3mqZ57uYcQce7b2dP+NX7M7iaRMx2rvyfP0LRtF0HSLek8PaXY03Dt9LVqnaZmPbXPWqfOZfQimI5xEU+UdDpMz4pcvyMi5emblyreZ8Ww2rdNFMUxCKomaJp3lY1DCw9RwLmBqeFjZ+Lcjau1kW4rpn9vRyEqFq/ctVdqidpTXRTVG0wwH2lejPpGp27mfwTnUaZlTE1fMcqvezXP+7V1p+3eGtXGfA/E/CObVia/o2Tg1xO1NVdPqV+dNcerV9kvRCaaZr78xE1eyfBRnYeFqWHcwdUxMbOw7kbVWL9EV01fZP3w6Do/HmXiRFGVHpKfHv8A9sLk6Rbr9ajlLzSuWop37092Y9i33InpU3C7R/Ro4c1e1fzeC82rR86d6vmWTVNeNVPPlTV9Kj98NaeOOBeKODM+MHiPR7+FVMzFu7VTvauR401x6tUOo6Xr+DqlO9ivn4Tyn5MFexbtmfWh1OKN567KZjb2rt2maappqj1on2Kavoc45swtlsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATC5RTvMdNvOQRbjeNuUe9z9M0vM1LNs4GBh3MzKyKu7atWKaqrlU+UQyL2OdjPE/aDR+EsT5vh6NZvfJ5GZcriqqNucxRbj1qp290ebbTs94E4S4FsTjcNYE05U07X8/JjfJu+MTVP0Y8qdoazrnFeJpUTRHrXPCP8r3EwbmTVy5R4sN9lPo3Y9imjVe0O/NM93vUaRjV71f8AOuR0+rTz82wumYuLg6bY0vT8TGxdPx6e7ax7FPdooiPLx855uV3Z3mZ5FMxv5uN6xxBm6pVNV+raO6mOkNnxsK1jxtTHPxT3Y8OhtG6eiGtzVMr7YlHNIjdKIlKJNwVRKeXko3Sc0bQmZ57+1x9QxsXUsC7haliWc3Fr3iuxftxXRVHulelO/JWtXq7VUVUTtL4rt01RtLAvaR6NWharXfzuCs/8F5M71fMciqarEzP9WrrR9u8NcuNuA+JuEcj5txDpF/AmJmKLtdEzbu/Vrj1Zegkx57ea3m2MfPwa8DUcWznYdcTFdnItxXRV74l0DSOPczFiLeVHpKf7sRkaRbr3mjk81q7VNNMzPj9q3NG0bzTu3C7SvRu4c1y1czeDb9OiZ871fNLtc1YtyfCJ51W/3x7mtnaFwFxXwNnzh8R6PkYW/wDJ3Y9azdjxprjlP3un6XxBganTvYr9bwnq1+/iXbE+vDp0x5KVVUTFW20+5SzS3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATHVX6u3Xmog35A7JwrxPrnC2dRqOhavk4GTExV3rN2Y329lUdJ90tkezr0m9P1Gqzg8e4MYd/buzqeHTM0T512+se+nf3NTKatvFV8pHn9jFalomHqdE05FEb+Pf81xYyblmremXpTo+fp2radTqejaji6ng1dL2Pdiun3Tt0nylyKa6a571PR55cF8Y6/whqX4R4f1bLwLsxtXFqr1bnlVTPKqPfDYns69J3Tc/wCR0/jnS5wbsTt+EcGJm3PnXb6x76d/c5fq/AGTjb14k9unw7/9s5jaxRVO1zk2HjaY3iYmPFCxoWo6br2nU6joWpYmp4dXOLmNXFUR746xPvcmYneY8Ornd+zctVzRXTMT4Szdu5TXG8TupQkUdpVN0CZQJEboEmyoUqgEbJBEqqeXRTnWrOoYV7C1DGxs3FvU925YybUXKKo90qoJVrF6q1V2qapiY8FOuiKo2mN2D+0j0aeGtZs16hwRmfgTUI3q+Z5FU141c8/o1fSo/fDWbjrs/wCLeC82uxxHpGRjR3tqb8evZufVrjlL0H6b7TPNby8fDzMG7p2oYWPnYV6na5ZyKO/TX74lvmkcfZeLtRkx6Sn+7EZGj0V7zRyl5rX6fVpmY5rMxv03bi9oPo28L6xj3crg/Lr0XNneqMXIqm5jVTz5RP0qP3w1q7QOBOJ+B835jxBo97Eqrmfk78T3rV2I9tFUcpdS0riHB1Wn7irn4Tylgb+HcsfjdMqjZC7fjfar2+1aZpagAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4mYnquWrlVFc1RO07dVnc3kS7BwvxbxFwzqdGoaBq2TpuRTPWxX3Yq8qqek+6Wx/Zv6TmNkxThdoWn9y5yiNRwrfKfOu3/nH7GqVNc79Vfe57zVO7FanomFqdPZyKI38e/5q1nJuWZ3pl6U6HqWmcQ6ZRq3D2o42o4NccrtmvfbymOsT5S5MT5x+152cGcY8R8I58Z3Dmr5Wn3pn1ot1epc8qqZ5Vfa2P7OPSWwcyacHjrToxb3SdQwae9RPnXa6x/8AHf3OX6z9n+VY3qxJ7dPh3s9javTVO1zq2FmPchxND1TSuINNp1Lh/V8LVMOetePdiru+Ux1pnymIcuOe8dJjxc9v41yxV2bkdmfCWaou01xvTKJhGyqeXVCjtMQqboEiEgAg3NwQBAQkK94oq28P2sEem1E/wD4ajvTMU6hdmPtohnnzYG9N2qaeBOG/PULvwNu4Kq/7e1t+v0YvVIj+HndqNe5Uf9+Kwu3JmesrT0B5NRnqACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXYjp1nkqt0xNyImJ8/JMRuLMQnn4Mi9lPZXxX2hZs/gvE+babTV3b2pZMTTYt+O39eryh9X0keAeH+zriTR9E0XIzcmbumU38u9kTH425NdUd6mI+jHLp7Fj/yGN/ExixXvXMTO3l4qkWq5o7e3JianvbdeS7Fe09I961X7PcoXqm7HwtxLrfDGq0apoep5GBmUxvFVirbePCqOkx5S2O7M/SZxcq1TgdoOJFm7E7U6lhW/Vn69v2e+P2NUIqlMVTvylidT0TD1Kjs5FG/698fFXs5Fy1Pqy9K9F1HSde06NS0PVsXVMOqN4u49yKu75VR1ife5FExPLfm87ODOKNe4U1L8I8PatladkxHOq1VtFUeFVPSqPKYbEdnfpNYmRFvD4806qi9HL8JYNvlV53LX+dP7HMdY+z7IsRNzEnt0+HezuNrNNU9m5ybGjhcPaxpPEWlU6rw/quJqmJV1rsV7zT5VU9aZ98Odt1mZiHPL+LcsVzRcjaY7pZui7TXG9M7qQ9hKgqAAITAQgV+xgT04J/iJwz4/P7vwQzywJ6cH8xuGf1+98ENs4J98Wvj9GM1X8vLUevotLtcclp6DahPUAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJiJk7spo6Snn9iYERRMxuq+Tq26fvX7Fuqae/Tz7s8/ezF2U9gfE/FvyGp63E8P6JX68Xr1H5Rfp8LdufH+tVtHvWmbnY+Dam7kVxTT+v+FS1aru1dmmN2J9B0jU9Y1Ozpul4OTm5d6dqLOPRNVdX7OnvbQdk/o56bplijU+0GfnubPrUaTYub27Xh8rXH0qvKOXnLL/AAJwXw5wTgVYvDWnUYtVVPduZNfr37v1q/8AKNodht0zHL2OT6/x7dyImzg70U+PfP7Ngw9Hin1r3P8ARat2aLOJZxse3bxsWxT3bONZpim3bp8IiGqvpzTP+kPQonrGjU8/+dcbZ3I2hqb6c3+sPQ/8Ip/6lSy4Cu13NY7VU7z2ZVdXiIx4iOjXueimeqpTPV29q3RCeSAF2muKY8VUXVhNPUH3+GeINY0DUKM7Q9Wy9NyqZiYuWLk07+Ux0qjymGxXZz6TFq/FrTOO9Om/e78UW9RwbUUzVvO29dvfb7af2NXKZ25uRgVfl+PV7flafihitT0fD1G3MX6ImfHv+avYv3LU70S9Kqo2nrvTVEVRPlKmU772LG/+xo+GB5tyaIt3aqI6RLeLVU1URMoEo3WyoJhCYlMgwL6b0x/AThr/ABC78EM9exgL03t/4EcNf4he+CG2cE++bXx+jG6r+XlqTX9FaXa+i09BtPnqACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEx1VRRuWojvRu5dixXfvUWbNu5cuXKu7RRbp71VUzy2iPbJy7xxbdG8zHeiOTs/APAvEXG+sW9M4fwa79c1bXLtUd21Zjxrr6R7uss1dkfo15mbj0612gXbumYsx3rWm26ojIuR/aT/wCXHl19zZPQNM0rQ9Gt6No+k4uBgURtTZtU7R759s1ec7y0jXeNcTAibePPbr/TpH7sph6XcvT2q+UOhdk/YjwtwBbozc+i1r2vRG85F+3E2rE+Fqifinn7mTbs1X6+/d5z5+xTERFMRv0VxLjmpavlahd9LkV7z/aPg2Wxi27FO1EJiPBVsiE+xipqlXmEXY+5qT6cu/8ApF0bf/2in46m29fX7Gpnp0xEdoei+P4Kp+OW+fZ971/+ZYjWfYQ15Uz1VeCmerubVp6oAATE7SgBdpr2jovYVX5XYjwuU/FDiOThfnVj9JT98PmvpKYel2/4ixP9hR8MEqYn8nx/1ej4YVPLmb7evzlvtn2dIIStlUBMIET0YF9NyP4i8Nz/AHhe+CGfGBfTdj+IfDk/3hd+CG18Fe+LXx+jG6r+XlqJX9FbXbnRaehGnz1ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACu3ylmr0OIpq7a8Wa7dFfdw8iqnvUxPdnu8pjfpPmwrR0lm30MpiO2azE+3Av8AwwxOvTNOm35j+WVfGiJu0+bcauYuX7tdXOqqeczJTyjaOkER61U+cp2eaq653b3EQQlCYU5fSoiVKd0ITXP3NTPTnmZ7SdI8I0mj4qm2Fc8/sao+nDFNztK0qKaomY0qiJjfp60t/wDs+96T/TLCazH3MNe6ttp5LS/XHqTtHPdZ2nwl3Fq6BO0oAAAcnD/ObP14+9xnKw/zmz9en73zV0THV6VRP5Pj/q9v4YVe1bj83x/1e38MKol5dzfb1+ct+s+zpVSiE7i1VUpjogiUShLA/pufzB4c/wARu/BDPDAvpuT/ABE4d/xC78ENq4K982vj9GN1b8vLUevosrtfRaehGnz1AEoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAV0dGZ/Q4nbtpxefXDvx/+WF6GZ/Q6jftoxP1O/wDCxGv+7L/9M/RXxva0+bc6PpVe+UqKetXvlU801dW+RCUCJ6vlKd07qdzdMImEVc9457TG0xu+Lxnwpwzxfp1eHxHomJmxVT3aL/c7t+14d25HP/J9rZO3mu8bLu41yLlqqaZjvhTrtUVxtVG7VftJ9GrWcGK9Q4LzatYxad6vml3ajIojnyielf7pYG1fSNT0zMu4uoYGVi5Frf5S3etzTVT793pDTTtVE01TTV4x1fM4u4X4d4xwatP4n0qxn2Zj1bkx3b1E+MVxzh0bSPtDvW4i3m09qPGOrB5OjRMzVa5POLuxMbqJ6zG3Rsf2j+jVq+n/ADjN4GzaNZxZmZjDvbUZNuOfKn2V/ulgHV9G1LStQuYGpYWRh5dudq7N+3NFdPviXTsDVMTUKe1j1xV9fkwN2xctTtXD5kxshdm3PON43idtlNVuaZ2mY3X6kocjE/OLX14+9ZmNpcjD/OLX14+9818oTD0pmNrGP+r2/hgVVfyNj9Bb+GEbPL2Z7evzlv1n2dJulGyVoqqhCY6oQT0YF9Nz+YvDcf3hd+CGe56MB+m3/Mjhv9fvfBDa+CvfFr4/RjdW/LS1Hr6La5X0W3oRp89QAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqoZn9Dn/XVhz/wd/4WGKWafQ6j/wAZceY/o4V+Z/8AqxGv+7Mj+mfouMWN7tPm3Lp6z75Tsiid9/tVvNFXVvcKdhIgUzCFUwpmBKVUKYTAJTO6E7phEp9ns33339r4/GfDPDfGGDGHxTouPqNG0xRemnu3rX1a45w+vMz7OUrlqK7lcW6Ke9XtvPl5r7Ev3rFcV2qpiru2W923RVHrRyatdp3oyaliUXdR4DzqtWx+c1YGRMU5FHXlTV0r93KWvut6Xn6Rm14Gp4d/EzLU7XbV+3NFVM+G0tyO1rt34a4Nu5Gn8NVWdd16ImiuumrfEx6uf0pj6dUeFPLzaldoXGPEPGuuzq/EepVZ2VFPcoq7sU00UbzMU0xHKId24XyNXv2e1n0xt3T0q+TUs2jHiv7qXWa4iK5iN9vNexf5e39ePvWKpmat5neXIxI/KLX14+9tNfSVjD0rj83x5/4e38MJR/6fH/V7fwwqh5czPb1+ct+s+zpRskiErTdVQlMEQgQwJ6bn8xeHJ/vC78EM+ywF6bs/xF4c/wAQvfBDbOCffNr4/RjdV/Ly1Hr+itLtzotPQkNPnqACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFVvbvxvG8bsx+inreh6D2o0ZWu6nY02zdw7lmzcufQquVbbRM/0Y685Ybp6wvRO0brbNxKczHrx6p2iqNn3brmiqKo7npbvTbij1/lKa471NyJiaa48YmOS5TMT0aJdmHa7xhwLfijTs357p8T6+DlVTXamP9320/Y2V7PO33griy5Rj6pcnhvUKuXcyKt7Fc+Vfs+3ZxXWeBs7Dma7cdujxjr8m0Y2rW7nq1cpZaRJb/GWIv2blu9Zq+jct1RVTVHlMckdfe0ebU0zMTymGVpriroISRCmqI2TCdkV7UxvM7JjmiZTtC3VMxO0bVb+yVnNzcXCxrmZnZNrGxLdO927dq7tFEeMywJ2u+kZpWDau6Z2e9+/qE70V6rdo3t249vydM9Z85Z3RtBy9UuRTYp3jvnuhZZWbbx49aebMnG/GfDPBGFGZxRqtGJNUb2sSj1r976tHh5ztDVftg7eeIuMfnGl6JNeh6HO8VWLVz8dfj+0r9sf7scvexPresahrOfd1HVc/Kzs69VM3L1+vvTV7p/y6Pm1Oy6LwdhaZMXK47dzxnu8ms5WoXb3LfaF35Wd53q2hauzE84n28o8FupS23dj45Jnq5OH+c2fr0/e4sOXgz+V2P0lPxQ+Kukph6WTG2Pj/AKvR8MIjqqnnj4/6vR8MEQ8uZnt6/OW+2PZ0+QCdloqkdEx1Ig5vqKd0TKqY5Nf/AE2omeCuHPCNQvf9OGXuO+MuFeC8CMnijVbeL3qZm1iUetkXvq0Rz+2doah9u3a/qHaNVaw7eDa0/RsO/VXi2PpXap2279dXjt7I5Q6FwPoeXOdRlzTtRT3z3+TB6pl25tzbiebFGTty29sLC7enfx81p2xrPPvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTO1USriuFsBetXIpmrbeN4XKr1MUd2mPd/37XFTEp3kd74C7TOMeCq6Luhazdt2d968W7Pyli5HhVRP+W0tm+zn0ieCuI7dnD4gtTw3qc7RVcqqmvFuVc/6XWj7f2tLqY5c1dEz3tqaojeNpmWB1ThvA1SmfS0bVeMcpXePm3bM8pemFFVN6xRk49dvIx643ou2qoroqjymOSKZjvbNBuzftI4x4Dy6rugarcpsVfymJe/GWLnvonp742lsn2cekLwnxLMYXEtqOHdQm3VNVyau9jXdomZ2nrTPlPu3ct1fgLMw5mux95T+nX5M7jaxRc5V8pZq3p3jntvO0b+2XSe1ftO4X7OMWunUsq3m6vXR+J0uxVFVyZ9k1z/AEKffzYU7V/SSzMy1e0Xs/tV4GPzpq1K7G96unn/ACcT9CPOebXPUMu/mZdzJyL929fu1TVdvXa5rruVT7Zmee7LcP8AAE1TF7P5R/L3/Fb5er/+bXzd17Uu1Pizj/KinVsmmxgUVTVZwMf1bNv3+2qfOXQ71zaqe5NcRPs3UVXJ73Loprq3l1THx7WNRFuzTEUx3QwNddVc9qrmd/fl7ETVyUiq+UygAHJwvzux+kp+9xnM0+Py3G/S0/FD5r6SmHpbt+T48f8AD0fDBEK7kbW7H6Gj4YU77PLmZ7evzlvdn2dPkG8RvMzEU+JR+MufJ0RM1z7NmPu03th4M4Bs5Fi9lU6xrVEbUafi1bxTV/aV9KY8ucqun6Zk592LWPRNUov5NuzTvXLv+VfxsTEuZ2bftYuFap712/eriiimPGZlr72t+kjg6fF7SezuIzL8bxXquRR+Lo8rVE/S+tPLyYO7Tu1XjDtBy5jXM35PBtTNVrT8b1LFvw5f0p85dCqq2mZ6b+br+hcB2MOIvZnrV+HdH7tbytVqu+rRyh9HXda1HWdSu6nqeoX83MvzNV29ermquZ8Ofs8uj5tVyIjbeqfCJ9iiqY25LcugxTFEdmI5MRz36qq6u8pAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE96TdAC5Tcq3jeqY+1c+ViJnaI58vHZxwF+q7v5LVdUzKkBO6J5gAAAAA5+mxvnYkeN6j4ocB9PQJtxq+FN+5TRRF+3M1TPKmO9HV8V/hlMdXpbld2iizvyj5Gn4YfJ4n1zROF9Ir1jiTU7OnYVMerNyfXuT4UU9ap9zGnbD6QGhcIRVpfDVGPr2txZpj5amuKsTG3jlM1R9Or292OXjLUbjTi3iHi7Va9U4i1XI1DJqmdpuVerRH9WimOVMeUOPaRwNfzrtV/K9WiZnbxlsF3VYt0RRRznZmDti9IrW9et3dK4Mt3ND0mveirI3/Kr8ec/wBCJ8I5+bAuXfrrnvVb1TMzvNU7zM+MrcXaojbwneN1F2d467ur6fpuNp1r0ePTFMMHcu13Z7Vc7qZrmVO87oF7upJ3lAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ3QAufK1d3b2eCmaplSAnefEmZlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=" alt="TrocaLab"/>
+    </div>
+  </div>
+
+  <h1 class="brand-name">TrocaLab<em style="color:#000000;text-shadow:none;">™</em></h1>
+  <p class="brand-sub">Fique por dentro de Todas as Novidades Da TrocaLab™</p>
+
+  <div class="links">
+
+    <p class="section-label">Acesso Principal</p>
+
+    <a class="tile tile-primary" href="https://trocalab.github.io/brasil.com.br/" target="_blank">
+      <div class="t-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFC700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div class="t-content">
+        <div class="t-title">TrocaLab™ Brasil</div>
+        <div class="t-desc">Acesse todas as soluções em um só lugar e descubra como funciona a troca de valores no Brasil.</div>
+      </div>
+      <div class="t-arrow">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <a class="tile tile-primary" href="https://trocalab.github.io/sp.com.br/" target="_blank">
+      <div class="t-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFC700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <div class="t-content">
+        <div class="t-title">TrocaLab™ São Paulo</div>
+        <div class="t-desc">Acesse todas as soluções em um só lugar e descubra como funciona a troca de valores em São Paulo.</div>
+      </div>
+      <div class="t-arrow">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <div class="divider"></div>
+    <p class="section-label">Ferramentas</p>
+
+    <a class="tile tile-secondary" href="https://trocalab.github.io/creative-prompts/" target="_blank">
+      <div class="t-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFC700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <div class="t-content">
+        <div class="t-title">Creative Prompts</div>
+        <div class="t-desc">Gere múltiplos criativos e carrosséis com IA a partir de uma estrutura pronta, alterando apenas cores e textos.</div>
+      </div>
+      <div class="t-arrow">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <a class="tile tile-secondary" href="https://trocalab.github.io/instanalysis/" target="_blank">
+      <div class="t-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFC700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      </div>
+      <div class="t-content">
+        <div class="t-title">InstaNalysis</div>
+        <div class="t-desc">Descubra o que limita seu Instagram com uma análise guiada por um framework estratégico de mais de 50 páginas.</div>
+      </div>
+      <div class="t-arrow">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">© 2025 TrocaLab™ — Todos os direitos reservados</div>
+
+<a class="fab" href="https://wa.me/5511914417241?text=Vim%20pelo%20Linktree%20e%20quero%20falar%20sobre%20parceria%20com%20a%20TrocaLab" target="_blank" rel="noopener noreferrer" aria-label="Propor Parceria via WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#FFC700" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+  </svg>
+</a>
+
+</body>
+</html>
